@@ -1,4 +1,4 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { fetchContacts, addContact, deleteContact } from './contactsThunks';
 
 const STATUSES = {
@@ -6,10 +6,6 @@ const STATUSES = {
   FULFILLED: 'fulfilled',
   REJECTED: 'rejected',
 };
-
-const thunks = [fetchContacts, addContact, deleteContact];
-
-const createStatus = type => thunks.map(thunk => thunk[type]);
 
 const handlePending = state => {
   state.isLoading = true;
@@ -47,9 +43,9 @@ export const contactsSlice = createSlice({
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.items = state.items.filter(({ id }) => id !== payload);
       })
-      .addMatcher(isAnyOf(...createStatus(PENDING)), handlePending)
-      .addMatcher(isAnyOf(...createStatus(REJECTED)), handleRejected)
-      .addMatcher(isAnyOf(...createStatus(FULFILLED)), handleFulfilled);
+      .addMatcher(({ type }) => type.endsWith(PENDING), handlePending)
+      .addMatcher(({ type }) => type.endsWith(REJECTED), handleRejected)
+      .addMatcher(({ type }) => type.endsWith(FULFILLED), handleFulfilled);
   },
 });
 
