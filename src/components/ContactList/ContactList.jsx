@@ -1,24 +1,23 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilter } from 'redux/filter/filterSelectors';
+import { selectFilter } from 'redux/filter/filterSelectors';
 import {
-  getContacts,
-  getError,
-  getIsLoading,
+  selectContacts,
+  selectError,
+  selectIsLoading,
 } from 'redux/contacts/contactSelectors';
 import { fetchContacts, deleteContact } from 'redux/contacts/contactsThunks';
 import ContactListStyled from './ContactListStyled';
 import Button from 'components/UI/Button/Button';
-import Loader from 'components/Loader/Loader';
 import Error from 'components/Error/Error';
 
 const ContactList = () => {
   const dispatch = useDispatch();
 
-  const contacts = useSelector(getContacts);
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
-  const filter = useSelector(getFilter);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const filter = useSelector(selectFilter);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -38,7 +37,7 @@ const ContactList = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
       {error && <Error message={error.message} />}
       <ContactListStyled>
         {filteredContacts &&

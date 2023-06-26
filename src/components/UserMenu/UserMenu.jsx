@@ -1,28 +1,39 @@
-import { Box, Typography, Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { Box, Typography, Button, Divider } from '@mui/material';
 import { ThemeToggler } from 'components/UI/ThemeToggler/ThemeToggler';
+import { logout } from 'redux/auth/authThunks';
 
 const UserMenu = () => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+  const dispatch = useDispatch();
 
-        py: 2,
-      }}
-    >
-      <ThemeToggler />
-      <Typography
+  return (
+    <>
+      <Box
         sx={{
-          ml: 'auto',
-          mr: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+
+          py: 2,
         }}
       >
-        mango@mail.com
-      </Typography>
-      <Button variant="outlined">Log In</Button>
-    </Box>
+        <ThemeToggler />
+        <Typography
+          sx={{
+            ml: 'auto',
+            mr: 2,
+          }}
+        >
+          mango@mail.com
+        </Typography>
+        <Button variant="outlined">Log in</Button>
+        <Button variant="outlined">Sign up</Button>
+        <Button variant="outlined" onClick={() => dispatch(logout())}>
+          Log out
+        </Button>
+      </Box>
+      <Divider sx={{ mb: 2 }} />
+    </>
   );
 };
 

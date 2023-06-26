@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getIsLoading } from 'redux/contacts/contactSelectors';
+import {
+  selectContacts,
+  selectIsLoading,
+} from 'redux/contacts/contactSelectors';
 import { addContact } from 'redux/contacts/contactsThunks';
 import ContactFormStyled from './ContactFormStyled';
 import FormGroup from 'components/UI/FormGroup/FormGroup';
@@ -9,8 +12,8 @@ import Button from 'components/UI/Button/Button';
 const ContactForm = () => {
   const dispatch = useDispatch();
 
-  const contacts = useSelector(getContacts);
-  const isLoading = useSelector(getIsLoading);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');

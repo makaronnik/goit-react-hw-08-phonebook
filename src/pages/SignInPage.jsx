@@ -1,0 +1,145 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Box,
+  Avatar,
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Typography,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { toast } from 'react-toastify';
+import { validateEmail } from 'utils/validators';
+import { login } from 'redux/auth/authThunks';
+import { clearError } from 'redux/auth/authSlice';
+import { selectIsLoading, selectError } from 'redux/auth/authSelectors';
+import { Loader } from 'components/Loader/Loader';
+
+export default function SignInPage() {
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(null);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(null);
+
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setEmailError(null);
+    setPasswordError(null);
+  }, [email, password]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        onClose: () => dispatch(clearError()),
+      });
+    }
+  }, [dispatch, error]);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    let errors = false;
+
+    if (!validateEmail(email)) {
+      setEmailError('Email is not valid');
+      errors = true;
+    }
+
+    if (password.length < 7) {
+      setPasswordError('Password must be at least 7 characters');
+      errors = true;
+    }
+
+    if (errors) {
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+
+    const credentials = Object.fromEntries(formData.entries());
+
+    dispatch(login(credentials));
+  };
+
+  if (isLoading) {
+    return <Loader size={150} />;
+  }
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: 500,
+        mx: 'auto',
+      }}
+    >
+      <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+        <LockOutlinedIcon />
+      </Avatar>
+
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              label="Email Address"
+              name="email"
+              id="email"
+              autoComplete="email"
+              required
+              fullWidth
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              error={emailError !== null}
+              helperText={emailError}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              label="Password"
+              name="password"
+              id="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              fullWidth
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              error={passwordError !== null}
+              helperText={passwordError}
+            />
+          </Grid>
+        </Grid>
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Sign Up
+        </Button>
+
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Link href="#" variant="body2">
+              Don't have an account? Sign Up
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
+  );
+}
