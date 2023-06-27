@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Avatar,
   Button,
   TextField,
-  Link,
+  Link as MuiLink,
   Grid,
   Typography,
 } from '@mui/material';
@@ -158,8 +159,10 @@ export default function SignUpPage() {
 
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="#" variant="body2">
-              Already have an account? Sign in
+            <Link to={'/signin'}>
+              <MuiLink variant="body2">
+                Already have an account? Sign in
+              </MuiLink>
             </Link>
           </Grid>
         </Grid>

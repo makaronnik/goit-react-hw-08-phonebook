@@ -1,7 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { setAuthToken, removeAuthToken } from 'API/axiosClient';
 import { statuses } from 'utils/constants';
-import { register, login, logout } from './authThunks';
+import { register, login, logout, refreshUser } from './authThunks';
 
 const thunks = [register, login, logout];
 
@@ -26,6 +26,7 @@ const initialState = {
   token: null,
   user: null,
   isLoading: false,
+  isRefreshing: false,
   error: null,
 };
 
@@ -41,7 +42,21 @@ export const authSlice = createSlice({
     const { PENDING, FULFILLED, REJECTED } = statuses;
 
     builder
-      .addCase(logout.fulfilled, state => {
+      .addCase(refreshUser.fulfilled, (state, { payload }) => {
+        state.user = { ...payload };
+      })
+      .addCase(refreshUser.pending, state => {
+        state.isRefreshing = true;
+      })
+
+      .addMatcher(
+        isAnyOf(refreshUser.fulfilled, refreshUser.rejected),
+        state => {
+          state.isRefreshing = false;
+        }
+      )
+
+      .addMatcher(isAnyOf(logout.fulfilled, refreshUser.rejected), state => {
         state.token = null;
         state.user = null;
 

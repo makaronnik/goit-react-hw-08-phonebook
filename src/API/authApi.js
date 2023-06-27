@@ -15,3 +15,9 @@ export const signIn = async credentials => {
 export const signOut = async () => {
   await axiosClient.post('/users/logout');
 };
+
+export const fetchCurrentUser = async () => {
+  const { data } = await axiosClient.get('/users/current');
+
+  return data;
+};

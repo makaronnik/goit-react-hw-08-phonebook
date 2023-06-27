@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { signIn, signOut, signUp } from 'API/authApi';
+import { fetchCurrentUser, signIn, signOut, signUp } from 'API/authApi';
+import { setAuthToken } from 'API/axiosClient';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -43,5 +44,21 @@ export const logout = createAsyncThunk(
     } catch (error) {
       return rejectWithValue('Something went wrong! Try again later.');
     }
+  }
+);
+
+export const refreshUser = createAsyncThunk(
+  'auth/refreshUser',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const { token } = state.auth;
+
+    if (!token) {
+      return thunkAPI.rejectWithValue();
+    }
+
+    setAuthToken(token);
+
+    return await fetchCurrentUser();
   }
 );
