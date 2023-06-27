@@ -7,8 +7,9 @@ import useAuth from 'hooks/useAuth';
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  const { user, isLoggedIn } = useAuth();
   const location = useLocation();
+
+  const { user, isLoggedIn } = useAuth();
 
   return (
     <>
@@ -22,13 +23,16 @@ const UserMenu = () => {
         }}
       >
         <ThemeToggler />
+        <Typography variant="h5" component="h1" sx={{ ml: 'auto' }}>
+          Phonebook
+        </Typography>
         <Typography
           sx={{
             ml: 'auto',
             mr: 2,
           }}
         >
-          {user?.email}
+          {user?.name}
         </Typography>
         {isLoggedIn && (
           <Button variant="outlined" onClick={() => dispatch(logout())}>
