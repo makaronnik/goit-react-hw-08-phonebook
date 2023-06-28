@@ -16,8 +16,9 @@ import { selectContacts } from 'redux/contacts/contactsSelectors';
 import { validateName, validatePhone } from 'utils/validators';
 
 const ContactFormModal = ({ open, onClose, contact = null }) => {
-  const title = contact ? 'Updating a contact' : 'Adding a contact';
-  const submitButtonText = contact ? 'Update' : 'Add';
+  const isUpdate = contact !== null;
+  const title = isUpdate ? 'Updating a contact' : 'Adding a contact';
+  const submitButtonText = isUpdate ? 'Update' : 'Add';
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -87,19 +88,16 @@ const ContactFormModal = ({ open, onClose, contact = null }) => {
       return;
     }
 
-    if (contact && contacts.some(contact => contact.name === name)) {
-      if (contact) {
-        onClose();
-
-        return;
-      }
-
+    if (
+      !isUpdate &&
+      contacts.some(({ name: contactName }) => contactName === name)
+    ) {
       setNameError(`${name} is already in contacts.`);
 
       return;
     }
 
-    if (contact) {
+    if (isUpdate) {
       dispatch(updateContact({ ...contact, name, number }));
     } else {
       dispatch(addContact({ name, number }));
