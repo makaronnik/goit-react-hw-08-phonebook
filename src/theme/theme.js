@@ -9,6 +9,10 @@ export const lightTheme = createTheme({
     text: {
       primary: '#11111',
     },
+    tooltip: {
+      backgroundColor: '#222',
+      color: '#11111',
+    },
   },
 });
 
@@ -20,6 +24,10 @@ export const darkTheme = createTheme({
     },
     text: {
       primary: '#fff',
+    },
+    tooltip: {
+      backgroundColor: '#f2f2f2',
+      color: '#222',
     },
   },
 });

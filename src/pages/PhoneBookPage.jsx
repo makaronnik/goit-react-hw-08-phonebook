@@ -4,18 +4,22 @@ import { Box, Fade } from '@mui/material';
 import ContactForm from 'components/ContactForm/ContactForm';
 import ContactList from 'components/ContactList/ContactList';
 
-const PhoneBookPage = ({ in: show }) => (
-  <Fade in={show} timeout={1000} appear={true} key="signup" unmountOnExit>
-    <Box>
-      <h1>Phonebook</h1>
-      <ContactForm />
+const PhoneBookPage = ({ in: show }) => {
+  if (true) return <div>Your contact list is empty</div>;
 
-      <h2>Contacts</h2>
-      <Filter />
-      <ContactList />
-    </Box>
-  </Fade>
-);
+  return (
+    <Fade in={show} timeout={1000} appear={true} key="signup" unmountOnExit>
+      <Box>
+        <h1>Phonebook</h1>
+        <ContactForm />
+
+        <h2>Contacts</h2>
+        <Filter />
+        <ContactList />
+      </Box>
+    </Fade>
+  );
+};
 
 PhoneBookPage.propTypes = {
   in: PropTypes.bool.isRequired,
