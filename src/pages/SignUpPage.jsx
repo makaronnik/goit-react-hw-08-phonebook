@@ -176,7 +176,7 @@ const SignUpPage = ({ in: show }) => {
 };
 
 SignUpPage.propTypes = {
-  in: PropTypes.bool.isRequired,
+  show: PropTypes.bool,
 };
 
 export default SignUpPage;

@@ -152,7 +152,7 @@ const SignInPage = ({ in: show }) => {
 };
 
 SignInPage.propTypes = {
-  in: PropTypes.bool.isRequired,
+  show: PropTypes.bool,
 };
 
 export default SignInPage;

@@ -1,8 +1,7 @@
 import { lazy, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { refreshUser } from 'redux/auth/authThunks';
-import { fetchContacts } from 'redux/contacts/contactsThunks';
 import useAuth from 'hooks/useAuth';
 import Layout from './Layout/Layout';
 import { Loader } from './Loader/Loader';
@@ -16,17 +15,11 @@ const SignInPage = lazy(() => import('pages/SignInPage'));
 const App = () => {
   const dispatch = useDispatch();
 
-  const { isRefreshing, isLoggedIn } = useAuth();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
     dispatch(refreshUser());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(fetchContacts());
-    }
-  }, [dispatch, isLoggedIn]);
 
   if (isRefreshing) {
     return <Loader size={150} />;

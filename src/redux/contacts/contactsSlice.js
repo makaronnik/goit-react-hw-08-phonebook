@@ -1,8 +1,13 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { statuses } from 'utils/constants';
-import { fetchContacts, addContact, deleteContact } from './contactsThunks';
+import {
+  fetchContacts,
+  addContact,
+  updateContact,
+  deleteContact,
+} from './contactsThunks';
 
-const thunks = [fetchContacts, addContact, deleteContact];
+const thunks = [fetchContacts, addContact, updateContact, deleteContact];
 
 const createStatus = type => thunks.map(thunk => thunk[type]);
 
@@ -24,6 +29,7 @@ const handleFulfilled = state => {
 const initialState = {
   items: [],
   isLoading: false,
+  isFetched: false,
   error: null,
 };
 
@@ -35,9 +41,15 @@ export const contactsSlice = createSlice({
     builder
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
         state.items = payload;
+        state.isFetched = true;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
         state.items.push(payload);
+      })
+      .addCase(updateContact.fulfilled, (state, { payload }) => {
+        const index = state.items.findIndex(({ id }) => id === payload.id);
+
+        state.items[index] = payload;
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.items = state.items.filter(({ id }) => id !== payload);

@@ -5,7 +5,7 @@ import {
   selectContacts,
   selectError,
   selectIsLoading,
-} from 'redux/contacts/contactSelectors';
+} from 'redux/contacts/contactsSelectors';
 import { fetchContacts, deleteContact } from 'redux/contacts/contactsThunks';
 import ContactListStyled from './ContactListStyled';
 import Button from 'components/UI/Button/Button';
