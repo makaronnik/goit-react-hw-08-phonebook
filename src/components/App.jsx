@@ -1,12 +1,12 @@
 import { lazy, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { refreshUser } from 'redux/auth/authThunks';
 import useAuth from 'hooks/useAuth';
 import Layout from './Layout/Layout';
 import { Loader } from './Loader/Loader';
-import { RestrictedRoute } from './RestrictedRoute';
-import { PrivateRoute } from './PrivateRoute';
+import RestrictedRoute from './RestrictedRoute';
+import PrivateRoute from './PrivateRoute';
 import PhoneBookPage from 'pages/PhoneBookPage';
 
 const SignUpPage = lazy(() => import('pages/SignUpPage'));

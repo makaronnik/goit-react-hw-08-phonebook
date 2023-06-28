@@ -7,9 +7,6 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getTheme } from 'redux/theme/themeSelectors';
-// import Filter from './ContactList/Filter/Filter';
-// import ContactForm from './ContactForm/ContactForm';
-// import ContactList from './ContactList/ContactList';
 import { Loader } from 'components/Loader/Loader';
 import UserMenu from 'components/UserMenu/UserMenu';
 

@@ -2,11 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectFilter } from 'redux/filter/filterSelectors';
-import {
-  selectContacts,
-  selectError,
-  selectIsLoading,
-} from 'redux/contacts/contactsSelectors';
+import { selectContacts } from 'redux/contacts/contactsSelectors';
 import { fetchContacts, deleteContact } from 'redux/contacts/contactsThunks';
 import { Box, Collapse, List } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
