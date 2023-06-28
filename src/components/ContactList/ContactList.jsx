@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectFilter } from 'redux/filter/filterSelectors';
@@ -7,16 +8,14 @@ import {
   selectIsLoading,
 } from 'redux/contacts/contactsSelectors';
 import { fetchContacts, deleteContact } from 'redux/contacts/contactsThunks';
-import ContactListStyled from './ContactListStyled';
-import Button from 'components/UI/Button/Button';
-import Error from 'components/Error/Error';
+import { Box, Collapse, List } from '@mui/material';
+import { TransitionGroup } from 'react-transition-group';
+import ContactListItem from './ContactListItem/ContactListItem';
 
-const ContactList = () => {
+const ContactList = ({ onUpdate }) => {
   const dispatch = useDispatch();
 
   const contacts = useSelector(selectContacts);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
   const filter = useSelector(selectFilter);
 
   useEffect(() => {
@@ -36,29 +35,27 @@ const ContactList = () => {
   }, [contacts, filter]);
 
   return (
-    <>
-      {/* {isLoading && <Loader />} */}
-      {error && <Error message={error.message} />}
-      <ContactListStyled>
-        {filteredContacts &&
-          filteredContacts.map(({ id, name, number }) => (
-            <li key={id}>
-              <div>
-                {name}: {number}{' '}
-                <Button
-                  small
-                  type="submit"
-                  disabled={isLoading}
-                  onClick={() => dispatch(deleteContact(id))}
-                >
-                  Delete
-                </Button>
-              </div>
-            </li>
+    <Box sx={{ display: 'inline-block' }}>
+      <List>
+        <TransitionGroup>
+          {filteredContacts.map((contact, index) => (
+            <Collapse key={contact.id}>
+              <ContactListItem
+                contact={contact}
+                onUpdate={onUpdate}
+                onRemove={({ id }) => dispatch(deleteContact(id))}
+                isLast={index === filteredContacts.length - 1}
+              />
+            </Collapse>
           ))}
-      </ContactListStyled>
-    </>
+        </TransitionGroup>
+      </List>
+    </Box>
   );
+};
+
+ContactList.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default ContactList;

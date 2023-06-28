@@ -12,7 +12,7 @@ export const addNewContact = async contact => {
   return data;
 };
 
-export const patchContactById = async (id, contact) => {
+export const patchContactById = async ({ id, ...contact }) => {
   const { data } = await axiosClient.patch(`/contacts/${id}`, contact);
 
   return data;

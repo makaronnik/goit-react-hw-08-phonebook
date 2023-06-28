@@ -22,6 +22,11 @@ const PhoneBookPage = ({ in: show }) => {
     }
   }, [dispatch, isFetched, isLoading]);
 
+  const handleOnUpdate = contact => {
+    setContactToUpdate(contact);
+    setShowContactFormModal(true);
+  };
+
   return (
     <>
       {contacts.length === 0 ? (
@@ -61,8 +66,12 @@ const PhoneBookPage = ({ in: show }) => {
           key="contacts-list"
           unmountOnExit
         >
-          <Box sx={{ mt: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              mt: 3,
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Filter />
               <Button
                 variant="contained"
@@ -72,7 +81,7 @@ const PhoneBookPage = ({ in: show }) => {
                 Add new contact
               </Button>
             </Box>
-            <ContactList />
+            <ContactList onUpdate={handleOnUpdate} />
           </Box>
         </Fade>
       )}

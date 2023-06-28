@@ -22,10 +22,10 @@ const UserMenu = () => {
           py: 2,
         }}
       >
-        <ThemeToggler />
-        <Typography variant="h5" component="h1" sx={{ ml: 'auto' }}>
+        <Typography variant="h4" component="h1">
           Phonebook
         </Typography>
+        <ThemeToggler />
         <Typography
           sx={{
             ml: 'auto',

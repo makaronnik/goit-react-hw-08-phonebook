@@ -30,7 +30,6 @@ const ContactFormModal = ({ open, onClose, contact = null }) => {
   const dispatch = useDispatch();
 
   const contacts = useSelector(selectContacts);
-  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
     if (contact) {
