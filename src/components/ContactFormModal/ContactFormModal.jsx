@@ -12,10 +12,7 @@ import {
   TextField,
 } from '@mui/material';
 import { addContact, updateContact } from 'redux/contacts/contactsThunks';
-import {
-  selectContacts,
-  selectIsLoading,
-} from 'redux/contacts/contactsSelectors';
+import { selectContacts } from 'redux/contacts/contactsSelectors';
 import { validateName, validatePhone } from 'utils/validators';
 
 const ContactFormModal = ({ open, onClose, contact = null }) => {
@@ -32,9 +29,12 @@ const ContactFormModal = ({ open, onClose, contact = null }) => {
   const contacts = useSelector(selectContacts);
 
   useEffect(() => {
-    if (contact) {
+    if (contact !== null) {
       setName(contact.name);
       setNumber(contact.number);
+    } else {
+      setName('');
+      setNumber('');
     }
   }, [contact]);
 
@@ -83,12 +83,19 @@ const ContactFormModal = ({ open, onClose, contact = null }) => {
       errors = true;
     }
 
-    if (contact && contacts.some(contact => contact.name === name)) {
-      setNameError(`${name} is already in contacts.`);
-      errors = true;
+    if (errors) {
+      return;
     }
 
-    if (errors) {
+    if (contact && contacts.some(contact => contact.name === name)) {
+      if (contact) {
+        onClose();
+
+        return;
+      }
+
+      setNameError(`${name} is already in contacts.`);
+
       return;
     }
 
@@ -104,8 +111,24 @@ const ContactFormModal = ({ open, onClose, contact = null }) => {
     onClose();
   };
 
+  const handleOnClose = () => {
+    setName('');
+    setNumber('');
+
+    setNameError(null);
+    setNumberError(null);
+
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={handleOnClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{ sx: { position: 'fixed', top: 50 } }}
+    >
       <DialogTitle>{title}</DialogTitle>
       <Box component="form" noValidate onSubmit={handleSubmit}>
         <DialogContent>
@@ -142,7 +165,7 @@ const ContactFormModal = ({ open, onClose, contact = null }) => {
         </DialogContent>
 
         <DialogActions sx={{ mb: 2, mr: 2 }}>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={handleOnClose}>Cancel</Button>
           <Button type="submit" variant="contained">
             {submitButtonText}
           </Button>

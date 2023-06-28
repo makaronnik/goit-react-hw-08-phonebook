@@ -36,6 +36,11 @@ const initialState = {
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
+  reducers: {
+    clearError: state => {
+      state.error = null;
+    },
+  },
   extraReducers: builder => {
     const { PENDING, FULFILLED, REJECTED } = statuses;
     builder
@@ -59,5 +64,7 @@ export const contactsSlice = createSlice({
       .addMatcher(isAnyOf(...createStatus(FULFILLED)), handleFulfilled);
   },
 });
+
+export const { clearError } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

@@ -7,6 +7,8 @@ import ContactList from 'components/ContactList/ContactList';
 import ContactFormModal from 'components/ContactFormModal/ContactFormModal';
 import { fetchContacts } from 'redux/contacts/contactsThunks';
 import useContacts from 'hooks/useContacts';
+import { toast } from 'react-toastify';
+import { clearError } from 'redux/contacts/contactsSlice';
 
 const PhoneBookPage = ({ in: show }) => {
   const dispatch = useDispatch();
@@ -14,13 +16,28 @@ const PhoneBookPage = ({ in: show }) => {
   const [showContactFormModal, setShowContactFormModal] = useState(false);
   const [contactToUpdate, setContactToUpdate] = useState(null);
 
-  const { contacts, isLoading, isFetched } = useContacts();
+  const { contacts, isLoading, isFetched, error } = useContacts();
 
   useEffect(() => {
     if (!isLoading && !isFetched) {
       dispatch(fetchContacts());
     }
   }, [dispatch, isFetched, isLoading]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        onClose: () => dispatch(clearError()),
+      });
+    }
+  }, [dispatch, error]);
+
+  const handleOnAdd = () => {
+    setContactToUpdate(null);
+    setShowContactFormModal(true);
+
+    console.log(contactToUpdate);
+  };
 
   const handleOnUpdate = contact => {
     setContactToUpdate(contact);
@@ -49,11 +66,7 @@ const PhoneBookPage = ({ in: show }) => {
             <Typography component="p" variant="h4">
               Your contact list is empty
             </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 2 }}
-              onClick={() => setShowContactFormModal(true)}
-            >
+            <Button variant="contained" sx={{ mt: 2 }} onClick={handleOnAdd}>
               Add new contact
             </Button>
           </Box>
@@ -71,11 +84,11 @@ const PhoneBookPage = ({ in: show }) => {
               mt: 3,
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <Filter />
               <Button
                 variant="contained"
-                onClick={() => setShowContactFormModal(true)}
+                onClick={handleOnAdd}
                 sx={{ pt: '7px', pb: '7px', ml: 2 }}
               >
                 Add new contact

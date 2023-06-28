@@ -13,8 +13,8 @@ export const fetchContacts = createAsyncThunk(
       const contacts = await fetchAllContacts();
 
       return contacts;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch {
+      return rejectWithValue('Something went wrong, try again later');
     }
   }
 );
@@ -26,8 +26,8 @@ export const addContact = createAsyncThunk(
       const newContact = await addNewContact(contact);
 
       return newContact;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch {
+      return rejectWithValue('Something went wrong, try again later');
     }
   }
 );
@@ -39,8 +39,8 @@ export const updateContact = createAsyncThunk(
       const updatedContact = await patchContactById(contact);
 
       return updatedContact;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch {
+      return rejectWithValue('Something went wrong, try again later');
     }
   }
 );
@@ -52,8 +52,8 @@ export const deleteContact = createAsyncThunk(
       await deleteContactById(id);
 
       return id;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch {
+      return rejectWithValue('Something went wrong, try again later');
     }
   }
 );
