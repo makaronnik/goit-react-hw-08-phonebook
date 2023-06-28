@@ -61,17 +61,17 @@ const PhoneBookPage = ({ in: show }) => {
           key="contacts-list"
           unmountOnExit
         >
-          <Box>
-            <Button
-              variant="contained"
-              sx={{ mt: 2 }}
-              onClick={() => setShowContactFormModal(true)}
-            >
-              Add new contact
-            </Button>
-
-            <h2>Contacts</h2>
-            <Filter />
+          <Box sx={{ mt: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Filter />
+              <Button
+                variant="contained"
+                onClick={() => setShowContactFormModal(true)}
+                sx={{ pt: '7px', pb: '7px', ml: 2 }}
+              >
+                Add new contact
+              </Button>
+            </Box>
             <ContactList />
           </Box>
         </Fade>
